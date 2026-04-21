@@ -1,0 +1,63 @@
+{
+  "name": "rayoapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "electron-builder --win --publish always",
+    "dist:local": "electron-builder --win --publish never"
+  },
+  "build": {
+    "appId": "com.rayo.app",
+    "productName": "RayoApp",
+    "files": [
+      "**/*",
+      "!node_modules/.cache",
+      "!dist",
+      "!credenciales.json"
+    ],
+    "extraResources": [
+      {
+        "from": "credenciales.json",
+        "to": "credenciales.json"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Rossswell",
+      "repo": "RayoApp"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rossswell/RayoApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Rossswell/RayoApp/issues"
+  },
+  "homepage": "https://github.com/Rossswell/RayoApp#readme",
+  "devDependencies": {
+    "electron": "^41.2.0",
+    "electron-builder": "^26.8.1"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "electron-updater": "^6.8.3",
+    "google-auth-library": "^10.6.2",
+    "google-spreadsheet": "^5.2.0"
+  }
+}

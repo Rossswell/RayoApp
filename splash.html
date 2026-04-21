@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargando RayoApp</title>
+    <link rel="stylesheet" href="splash.css">
+</head>
+<body>
+    <div class="splash-container">
+        <div class="bolt-container">
+            <!-- Iconic Balanced Bolt (Static) -->
+            <svg class="lightning-bolt" viewBox="0 0 100 200" preserveAspectRatio="xMidYMid meet">
+                <path d="M60,10 L25,110 L50,110 L40,190 L75,90 L50,90 Z" fill="#FACC15" />
+            </svg>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        <div class="app-name">RAYOAPP</div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        const progressBar = document.getElementById('progress');
+        let width = 0;
+
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    ipcRenderer.send('loading-complete');
+                }, 400);
+            } else {
+                width += Math.random() * 4; 
+                if (width > 100) width = 100;
+                progressBar.style.width = width + '%';
+            }
+        }, 120);
+    </script>
+</body>
+</html>
