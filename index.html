@@ -34,7 +34,7 @@
                         <path d="M60,10 L25,110 L50,110 L40,190 L75,90 L50,90 Z" fill="#FACC15" />
                     </svg>
                 </div>
-                <div class="sidebar-branding">
+                <div class="sidebar-branding" id="sidebar-branding" style="cursor:pointer;">
                     <span class="brand-name">RayoApp</span>
                     <span class="brand-sub">By RestDream</span>
                 </div>
@@ -61,15 +61,32 @@
                     </div>
 
                     <div class="submenu company-submenu" id="flash-high-submenu">
-                        <a href="#" id="dashboard-btn" class="nav-item active">
-                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7" rx="1"/>
-                                <rect x="14" y="3" width="7" height="7" rx="1"/>
-                                <rect x="14" y="14" width="7" height="7" rx="1"/>
-                                <rect x="3" y="14" width="7" height="7" rx="1"/>
-                            </svg>
-                            <span class="nav-label">Dashboard</span>
-                        </a>
+                        <div class="nav-group open" id="group-dashboard">
+                            <div class="nav-item dropdown-toggle" id="dashboard-toggle">
+                                <div style="display: flex; align-items: center;">
+                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                                    </svg>
+                                    <span class="nav-label">Dashboard</span>
+                                </div>
+                                <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="submenu" id="dashboard-submenu">
+                                <a href="#" class="submenu-item active" id="dashboard-rendimiento-btn">
+                                    <span class="submenu-dot"></span>
+                                    <span class="nav-label">Rendimiento empleados</span>
+                                </a>
+                                <a href="#" class="submenu-item" id="dashboard-ganancias-btn">
+                                    <span class="submenu-dot"></span>
+                                    <span class="nav-label">Ganancias</span>
+                                </a>
+                            </div>
+                        </div>
 
                         <div class="nav-group" id="group-empleados">
                             <div class="nav-item dropdown-toggle" id="empleados-toggle">
@@ -127,89 +144,162 @@
             </header>
             <div class="content">
                 <!-- Dashboard Page -->
-                <section id="dashboard-view" class="page-view active">
-                    <div class="dashboard-header">
-                        <div>
-                            <h2>Analytics Dashboard</h2>
-                            <p>Resumen semanal de asistencia y puntualidad.</p>
+                <!-- Home (default) -->
+                <section id="home-view" class="page-view active">
+                    <div class="home-page">
+                        <div class="home-greeting">
+                            <span class="home-greeting-label" id="home-day-label"></span>
+                            <h1 class="home-greeting-title">¡Hola, administrador!</h1>
                         </div>
-                        <button id="refresh-dashboard-btn" class="btn-primary" style="padding: 8px 16px; font-size: 13px;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle;">
-                                <path d="M21 2v6h-6"/><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 22v-6h6"/>
-                            </svg>
-                            Actualizar
-                        </button>
-                    </div>
-
-                    <div id="dashboard-loading" class="dashboard-loading" style="display: none;">
-                        <div class="spinner"></div>
-                        <p>Analizando registros...</p>
-                    </div>
-
-                    <div id="dashboard-content" class="dashboard-grid">
-                        <!-- Top KPI Cards -->
-                        <div class="kpi-card">
-                            <div class="kpi-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        <div class="home-grid">
+                            <div class="home-card home-card-clock">
+                                <div class="home-clock-time" id="home-clock"></div>
+                                <div class="home-clock-date" id="home-clock-date"></div>
                             </div>
-                            <div class="kpi-info">
-                                <h3>Total Registros</h3>
-                                <p id="kpi-total-registros">0</p>
+                            <div class="home-card home-card-calendar">
+                                <div class="home-cal-header">
+                                    <button class="home-cal-nav" id="cal-prev">&#8249;</button>
+                                    <span class="home-cal-month" id="cal-month-label"></span>
+                                    <button class="home-cal-nav" id="cal-next">&#8250;</button>
+                                </div>
+                                <div class="home-cal-grid">
+                                    <span class="home-cal-dow">Lu</span>
+                                    <span class="home-cal-dow">Ma</span>
+                                    <span class="home-cal-dow">Mi</span>
+                                    <span class="home-cal-dow">Ju</span>
+                                    <span class="home-cal-dow">Vi</span>
+                                    <span class="home-cal-dow">Sa</span>
+                                    <span class="home-cal-dow">Do</span>
+                                    <div id="cal-days" style="display:contents;"></div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="kpi-card">
-                            <div class="kpi-icon" style="background: #dcfce7;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                            </div>
-                            <div class="kpi-info">
-                                <h3>Puntualidad</h3>
-                                <p id="kpi-puntualidad">0%</p>
-                            </div>
-                        </div>
-
-                        <div class="kpi-card">
-                            <div class="kpi-icon" style="background: #fef9c3;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                            </div>
-                            <div class="kpi-info">
-                                <h3>Horas Trabajadas</h3>
-                                <p id="kpi-total-horas">0h</p>
-                            </div>
-                        </div>
-
-                        <div class="kpi-card">
-                            <div class="kpi-icon" style="background: #fee2e2;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            </div>
-                            <div class="kpi-info">
-                                <h3>Tardanzas</h3>
-                                <p id="kpi-tardanzas">0</p>
-                            </div>
-                        </div>
-
-                        <!-- Charts Section -->
-                        <div class="chart-card col-span-2">
-                            <h3>Horas por Empleado (Esta Semana)</h3>
-                            <div class="chart-container" style="height: 250px;">
-                                <canvas id="horasPorEmpleadoChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="chart-card">
-                            <h3>Puntualidad General</h3>
-                            <div class="chart-container" style="height: 250px;">
-                                <canvas id="puntualidadChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="chart-card col-span-3">
-                            <h3>Registros x Semana</h3>
-                            <div class="chart-container" style="height: 250px;">
-                                <canvas id="registrosSemanaChart"></canvas>
+                            <div class="home-card home-card-rates">
+                                <div class="home-rates-header">
+                                    <span class="home-rates-title">Tasas del día</span>
+                                    <span class="home-rates-updated" id="rates-updated"></span>
+                                </div>
+                                <div class="home-rates-list" id="rates-list">
+                                    <div class="home-rates-loading">Cargando tasas…</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </section>
+
+                <!-- Rendimiento empleados -->
+                <section id="dashboard-view" class="page-view">
+                    <div class="rend-layout">
+
+                        <!-- Right: content -->
+                        <div class="rend-content">
+
+                            <!-- Dashboard content -->
+                            <div id="rend-dashboard" style="display:flex; flex-direction:column; gap:16px;">
+
+                                <!-- Employee info + KPIs -->
+                                <div class="rend-top-row">
+                                    <div class="rend-emp-card">
+                                        <div class="rend-emp-avatar" id="rend-avatar"></div>
+                                        <div class="rend-emp-info">
+                                            <div style="display:flex;align-items:center;gap:8px;">
+                                                <div class="rend-emp-name" id="rend-name"></div>
+                                                <button class="rend-swap-icon" onclick="openRendSelector()" title="Cambiar empleado">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="14" height="14"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8v12M17 20l4-4M17 20l-4-4"/></svg>
+                                                </button>
+                                                <button class="rend-refresh-btn" id="rend-refresh-btn" title="Actualizar datos">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                                                </button>
+                                            </div>
+                                            <div class="rend-emp-meta" id="rend-meta"></div>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+                                        <div class="rend-kpi-filter">
+                                            <button class="rend-filter-btn active" data-filter="semana" id="kpi-filter-semana">Semana</button>
+                                            <button class="rend-filter-btn" data-filter="total" id="kpi-filter-total">Total</button>
+                                        </div>
+                                        <div class="rend-kpis">
+                                            <div class="rend-kpi">
+                                                <span class="rend-kpi-val" id="kpi-dias">—</span>
+                                                <span class="rend-kpi-lbl">Días trabajados</span>
+                                            </div>
+                                            <div class="rend-kpi">
+                                                <span class="rend-kpi-val" id="kpi-horas">—</span>
+                                                <span class="rend-kpi-lbl">Horas totales</span>
+                                            </div>
+                                            <div class="rend-kpi">
+                                                <span class="rend-kpi-val" id="kpi-puntuales">—</span>
+                                                <span class="rend-kpi-lbl">Entradas puntuales</span>
+                                            </div>
+                                            <div class="rend-kpi">
+                                                <span class="rend-kpi-val" id="kpi-tardanzas-r">—</span>
+                                                <span class="rend-kpi-lbl">Tardanzas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Charts row -->
+                                <div class="rend-charts-row">
+                                    <!-- Weekly hours chart -->
+                                    <div class="rend-chart-card">
+                                        <div class="rend-chart-header">
+                                            <span class="rend-chart-title">Horas trabajadas</span>
+                                            <div class="rend-week-nav">
+                                                <button class="rend-nav-btn" id="rend-week-prev">&#8249;</button>
+                                                <span class="rend-week-label" id="rend-week-label">Semana —</span>
+                                                <button class="rend-nav-btn" id="rend-week-next">&#8250;</button>
+                                            </div>
+                                        </div>
+                                        <div style="position:relative;height:200px;">
+                                            <canvas id="rendWeeklyChart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- Yearly chart -->
+                                    <div class="rend-chart-card">
+                                        <div class="rend-chart-header">
+                                            <span class="rend-chart-title">Días trabajados por semana</span>
+                                        </div>
+                                        <div style="position:relative;height:200px;">
+                                            <canvas id="rendYearlyChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detail table -->
+                                <div class="rend-chart-card" style="margin-top:0;">
+                                    <div class="rend-chart-header">
+                                        <span class="rend-chart-title">Detalle semanal</span>
+                                        <div class="rend-week-nav">
+                                            <button class="rend-nav-btn" id="rend-detail-week-prev">&#8249;</button>
+                                            <span class="rend-week-label" id="rend-detail-week-label">Semana —</span>
+                                            <button class="rend-nav-btn" id="rend-detail-week-next">&#8250;</button>
+                                        </div>
+                                    </div>
+                                    <div style="overflow-x:auto;">
+                                    <table class="rend-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Día</th>
+                                                <th>ENT</th>
+                                                <th>SAL</th>
+                                                <th>Horas</th>
+                                                <th>Estado (Entradas)</th>
+                                                <th>Justificativo</th>
+                                                <th>Estado (Salidas)</th>
+                                                <th>Just. salida anticipada</th>
+                                                <th>Just. salida tardía</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="rend-table-body"></tbody>
+                                    </table>
+                                    </div>
+                                </div>
+
+                            </div><!-- end rend-dashboard -->
+                        </div><!-- end rend-content -->
+                    </div><!-- end rend-layout -->
                 </section>
 
                 <!-- Add Employee Page -->
@@ -526,6 +616,13 @@
                                     </svg>
                                     <p>Seleccione un empleado de la lista para configurar su horario.</p>
                                 </div>
+                                <div id="schedule-loading" style="display: none; padding: 24px 0; display: none; flex-direction: column; gap: 14px;">
+                                    <div style="height: 72px; border-radius: 12px; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite;"></div>
+                                    <div style="height: 72px; border-radius: 12px; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite 0.1s;"></div>
+                                    <div style="height: 72px; border-radius: 12px; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite 0.2s;"></div>
+                                    <div style="height: 72px; border-radius: 12px; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite 0.3s;"></div>
+                                    <div style="height: 72px; border-radius: 12px; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite 0.4s;"></div>
+                                </div>
                                 <div id="schedule-form-container" class="schedule-form-container" style="display: none;">
                                     <div class="week-schedule-grid">
                                         <div class="schedule-day">
@@ -751,6 +848,14 @@
                     </div>
                 </section>
 
+                <!-- Ganancias Page -->
+                <section id="ganancias-view" class="page-view">
+                    <div class="page-header">
+                        <h2>Ganancias</h2>
+                        <p>Próximamente estaremos implementando el panel de ganancias.</p>
+                    </div>
+                </section>
+
                 <!-- Add Nómina Modal -->
                 <div id="add-nomina-modal" class="profile-modal-overlay" style="display:none;">
                     <div class="profile-modal edit-modal" style="max-width: 600px;">
@@ -820,6 +925,41 @@
             </div>
         </main>
     </section>
+
+    <!-- Employee Selector Modal for Rendimiento -->
+    <div id="rend-selector-modal" class="profile-modal-overlay" style="display:none;">
+        <div class="profile-modal rend-selector-modal" style="max-width: 580px;">
+            <button class="profile-modal-close" onclick="closeRendSelector()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="profile-modal-content">
+                <div class="profile-hero" style="background: linear-gradient(135deg, rgba(250, 204, 21, 0.1), rgba(250, 204, 21, 0.05)); padding: 25px; border-bottom: 1px solid var(--border-color);">
+                    <div class="profile-hero-info" style="margin-left: 0;">
+                        <h2 style="display: flex; align-items: center; gap: 10px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary-yellow)" stroke-width="2" style="width:24px; height:24px;">
+                                <path d="M17 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                            Seleccionar Empleado
+                        </h2>
+                        <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">Busca un empleado para visualizar sus métricas de rendimiento.</p>
+                    </div>
+                </div>
+                <div style="padding: 20px;">
+                    <div class="search-box" style="max-width: none; margin-bottom: 20px;">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                        </svg>
+                        <input type="text" id="rend-emp-search-modal" placeholder="Buscar por nombre, cédula o área..." style="width: 100%; height: 42px; padding-left: 40px; border-radius: 10px; border: 1px solid var(--border-color);">
+                    </div>
+                    <div id="rend-emp-list-modal" class="rend-selector-list" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                        <!-- Se poblará dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

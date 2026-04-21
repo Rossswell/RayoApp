@@ -389,7 +389,8 @@
         }
 
         /* Spinner inside button */
-        .btn-spinner, .btn-card-spinner {
+        .btn-spinner,
+        .btn-card-spinner {
             width: 20px;
             height: 20px;
             border: 2.5px solid rgba(0, 0, 0, 0.1);
@@ -1017,6 +1018,43 @@
             background: #7f1d1d;
         }
 
+        /* ── LOADING OVERLAY ─────────────────────── */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+            background: var(--bg);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner-ring {
+            width: 52px;
+            height: 52px;
+            border: 4px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-overlay-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+        }
+
         /* Modal / Sheet for Justification */
         .modal-overlay {
             position: fixed;
@@ -1158,6 +1196,7 @@
             transform: none;
             box-shadow: none;
         }
+
         /* 2FA Verification */
         .verify-inputs {
             display: flex;
@@ -1268,12 +1307,14 @@
             <div class="card">
                 <div class="login-hero">
                     <div class="bolt-badge">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.3" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
                     </div>
                     <h1 class="login-title">Paso de seguridad</h1>
-                    <p class="login-sub">Verifica tu identidad ingresando el código temporal de 5 dígitos generado por el sistema.</p>
+                    <p class="login-sub">Verifica tu identidad ingresando el código temporal de 5 dígitos generado por
+                        el sistema.</p>
                 </div>
                 <div class="login-body">
                     <div class="global-err" id="verify-err"></div>
@@ -1288,14 +1329,22 @@
                         <div class="btn-spinner"></div>
                         <span class="btn-lbl">Verificar y continuar</span>
                     </button>
-                    <button class="btn-logout" onclick="showView('login-view')" style="margin-top: 16px; width: 100%; justify-content: center;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    <button class="btn-logout" onclick="showView('login-view')"
+                        style="margin-top: 16px; width: 100%; justify-content: center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
                         </svg>
                         Volver al inicio
                     </button>
                 </div>
             </div>
+        </div>
+
+        <!-- ═══════════════ LOADING OVERLAY ═══════════ -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner-ring"></div>
+            <p class="loading-overlay-text">Cargando tu información…</p>
         </div>
 
         <!-- ═══════════════ DASHBOARD ═══════════════ -->
@@ -1342,7 +1391,8 @@
                         </div>
                         <button class="btn-toggle-sch" id="btn-toggle-sch" onclick="toggleSchedule()">
                             <span>Mostrar horario completo</span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
                                 <path d="M6 9l6 6 6-6" />
                             </svg>
                         </button>
@@ -1408,13 +1458,15 @@
         <div class="modal-card">
             <div class="modal-header">
                 <div class="modal-title">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                         <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                     </svg>
                     <span>Justificar Registro</span>
                 </div>
-                <p class="modal-desc" id="modal-just-desc">Tu registro está fuera del horario habitual. Por favor, indica el motivo.</p>
+                <p class="modal-desc" id="modal-just-desc">Tu registro está fuera del horario habitual. Por favor,
+                    indica el motivo.</p>
             </div>
             <textarea class="just-textarea" id="txt-just" placeholder="Escribe tu justificación aquí..."></textarea>
             <div class="modal-actions">
@@ -1435,7 +1487,7 @@
         let currentEmp = null;
         let checkedIn = false;
         let records = [];
-        let toleranceMins = 0; 
+        let toleranceMins = 0;
         let isProcessing = false;
 
         function updateClock() {
@@ -1499,10 +1551,10 @@
                     btnOut.querySelector('.btn-card-desc').textContent = "Marca tu partida";
                 }
                 // El estado disabled lo maneja setStatus via syncStatus
-                syncStatus(); 
+                syncStatus();
             }
         }
-        
+
         function getTodayStr() {
             const now = new Date();
             const d = String(now.getDate()).padStart(2, '0');
@@ -1715,7 +1767,7 @@
             const inputs = document.querySelectorAll('.code-input');
             inputs.forEach(i => i.value = '');
             setTimeout(() => inputs[0].focus(), 500);
-            
+
             // Eventos para los inputs
             const container = document.getElementById('code-inputs-container');
             if (!container.dataset.init) {
@@ -1769,7 +1821,10 @@
             try {
                 const res = await api('verify2FA', { code });
                 if (res.success) {
-                    buildDashboard();
+                    const overlay = document.getElementById('loading-overlay');
+                    overlay.classList.add('active');
+                    await buildDashboard();
+                    overlay.classList.remove('active');
                     showView('dashboard-view');
                     toast('Acceso concedido.', 'ok');
                 } else {
@@ -1788,7 +1843,7 @@
         // ──────────────────────────────────────────────
         // DASHBOARD
         // ──────────────────────────────────────────────
-        function buildDashboard() {
+        async function buildDashboard() {
             updateHeaderProfile();
             updateClock();
 
@@ -1803,7 +1858,7 @@
             // Populate all days
             const fullList = document.getElementById('full-sch-list');
             const todayName = new Date().toLocaleDateString('es-VE', { weekday: 'long' }).toLowerCase();
-            
+
             if (sch.all.length > 0) {
                 fullList.innerHTML = sch.all.map(d => `
                     <div class="sch-day-card ${d.day.toLowerCase() === todayName ? 'today' : ''}">
@@ -1815,7 +1870,7 @@
                 fullList.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 20px;">No se encontraron horarios detallados.</div>';
             }
 
-            loadRecords();
+            await loadRecords();
         }
 
         // ──────────────────────────────────────────────
@@ -1829,8 +1884,8 @@
                 if (res.success) {
                     records = res.records || [];
                 }
-            } catch (e) { 
-                console.error(e); 
+            } catch (e) {
+                console.error(e);
                 toast('Error al cargar historial.', 'err');
             } finally {
                 syncStatus();
@@ -1850,7 +1905,7 @@
                 let rFecha = r.fecha;
                 if (typeof rFecha === 'string' && rFecha.includes('T')) {
                     const d = new Date(rFecha);
-                    rFecha = String(d.getDate()).padStart(2, '0') + "/" + String(d.getMonth()+1).padStart(2, '0') + "/" + d.getFullYear();
+                    rFecha = String(d.getDate()).padStart(2, '0') + "/" + String(d.getMonth() + 1).padStart(2, '0') + "/" + d.getFullYear();
                 }
                 return rFecha === today;
             });
@@ -1858,11 +1913,11 @@
             // Lógica estricta: si ya hay una SALIDA hoy, ya terminó
             const hasOut = todayR.some(r => r.tipo === 'SALIDA');
             const hasIn = todayR.some(r => r.tipo === 'ENTRADA');
-            
+
             // Si tiene entrada pero no salida -> está en turno
             const isIn = hasIn && !hasOut;
             const isDone = hasOut;
-            
+
             setStatus(isIn, isTooEarly, isDone);
         }
 
@@ -1876,20 +1931,20 @@
             if (isDone) {
                 if (dot) dot.className = 'status-dot';
                 if (lbl) lbl.textContent = 'Jornada completada';
-                
+
                 // Calcular duración total
                 const todayR = records.filter(r => {
                     let rFecha = r.fecha;
                     if (typeof rFecha === 'string' && rFecha.includes('T')) {
                         const d = new Date(rFecha);
-                        rFecha = String(d.getDate()).padStart(2, '0') + "/" + String(d.getMonth()+1).padStart(2, '0') + "/" + d.getFullYear();
+                        rFecha = String(d.getDate()).padStart(2, '0') + "/" + String(d.getMonth() + 1).padStart(2, '0') + "/" + d.getFullYear();
                     }
                     return rFecha === today;
                 });
-                
+
                 const entry = todayR.find(r => r.tipo === 'ENTRADA');
                 const exit = todayR.find(r => r.tipo === 'SALIDA');
-                
+
                 if (entry && exit) {
                     const parseT = (t) => {
                         const [h, m, s] = t.split(':').map(Number);
@@ -1963,27 +2018,27 @@
             document.getElementById('modal-just-desc').textContent = `Tu registro como "${message}" requiere una justificación obligatoria.`;
             document.getElementById('txt-just').value = '';
             document.getElementById('modal-just').classList.add('active');
-            
+
             // Re-config action
             document.getElementById('btn-save-just').onclick = async () => {
                 const btnM = document.getElementById('btn-save-just');
                 if (isProcessing || btnM.disabled) return;
-                
+
                 const reason = document.getElementById('txt-just').value.trim();
                 if (!reason) {
                     toast('Por favor, escribe una justificación.', 'err');
                     return;
                 }
-                
+
                 btnM.classList.add('loading');
                 btnM.disabled = true;
-                
+
                 pendingRegistration.justificativo = reason;
                 const ok = await commitRegistration(pendingRegistration);
-                
+
                 btnM.classList.remove('loading');
                 btnM.disabled = false;
-                
+
                 if (ok) closeJustModal();
             };
         }
@@ -2009,7 +2064,7 @@
         async function processAction(tipo) {
             if (!currentEmp || isProcessing) return;
             const btn = document.getElementById(tipo === 'ENTRADA' ? 'btn-in-dash' : 'btn-out-dash');
-            
+
             const now = new Date();
             const nowMins = now.getHours() * 60 + now.getMinutes();
             const sch = parseSchedule(currentEmp.horario);
@@ -2019,6 +2074,7 @@
             let mensajeSistema = "";
             let minTarde = "";
             let needsJustification = false;
+            let autoJustificativo = "";
 
             if (tipo === 'ENTRADA') {
                 if (nowMins === entryMins) {
@@ -2031,14 +2087,13 @@
                     needsJustification = true;
                 } else {
                     // Si permitimos entrada antes de la hora pero después de la tolerancia negativa (manejado por visibilidad)
-                    mensajeSistema = "✅Entrada puntual"; 
+                    mensajeSistema = "✅Entrada puntual";
                 }
             } else {
                 if (nowMins === exitMins) {
                     mensajeSistema = "🛑Salida puntual";
                 } else if (nowMins >= exitMins - toleranceMins && nowMins < exitMins) {
                     mensajeSistema = "🔴Salida tolerada";
-                    needsJustification = true;
                 } else if (nowMins < exitMins - toleranceMins) {
                     mensajeSistema = "➡️Salida anticipada";
                     needsJustification = true;
@@ -2057,7 +2112,7 @@
                 hora: now.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
                 mensajeSistema: mensajeSistema,
                 minTarde: minTarde,
-                justificativo: ""
+                justificativo: autoJustificativo
             };
 
             if (needsJustification) {
@@ -2073,7 +2128,7 @@
         async function commitRegistration(data) {
             if (isProcessing) return false;
             isProcessing = true;
-            
+
             const tipo = data.tipo;
             const btn = document.getElementById(tipo === 'ENTRADA' ? 'btn-in-dash' : 'btn-out-dash');
             btn.classList.add('loading');
@@ -2083,7 +2138,7 @@
                 const res = await api('register', data);
                 if (res.success) {
                     toast(`${data.mensajeSistema} registrado con éxito.`, 'ok');
-                    await loadRecords(); 
+                    await loadRecords();
                     return true;
                 } else {
                     toast(res.error || 'Error al registrar.', 'err');
@@ -2108,11 +2163,11 @@
             el.innerHTML = shown.map(r => {
                 let displayTime = r.hora;
                 let displayDate = r.fecha;
-                
+
                 // If it looks like ISO string (from older bug), format it better
                 if (typeof displayDate === 'string' && displayDate.includes('T')) {
                     const d = new Date(displayDate);
-                    displayDate = String(d.getDate()).padStart(2, '0') + "/" + String(d.getMonth()+1).padStart(2, '0') + "/" + d.getFullYear();
+                    displayDate = String(d.getDate()).padStart(2, '0') + "/" + String(d.getMonth() + 1).padStart(2, '0') + "/" + d.getFullYear();
                     displayTime = d.getUTCHours().toString().padStart(2, '0') + ":" + d.getUTCMinutes().toString().padStart(2, '0') + ":" + d.getUTCSeconds().toString().padStart(2, '0');
                 }
 
@@ -2162,8 +2217,8 @@
             // Incluimos action en la URL incluso si es POST para mayor compatibilidad con GAS
             const qs = new URLSearchParams(isWrite ? { action } : { action, ...params }).toString();
             const url = `${APPS_SCRIPT_URL}?${qs}`;
-            
-            const opts = { 
+
+            const opts = {
                 method: isWrite ? 'POST' : 'GET',
                 redirect: 'follow'
             };
